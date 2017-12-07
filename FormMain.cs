@@ -22,7 +22,7 @@ namespace CssSprite
         /// <summary>
         /// 版本号
         /// </summary>
-        public const string CurentVersion = "4.3.0.0";
+        public const string CurentVersion = "1.0.0";
 
         /// <summary>
         /// 服务器地址
@@ -48,7 +48,9 @@ namespace CssSprite
             internal readonly string FileName;
         }
 
-        private Thread thread;
+        private bool horizontal = false;
+        private bool vertical = false;
+        // private Thread thread;
         public FormMain()
         {
             InitializeComponent();
@@ -60,9 +62,9 @@ namespace CssSprite
 
             panelImages.KeyDown += panelImages_KeyDown;
             panelImages.LostFocus += panelImages_LostFocus;
-            ThreadStart th = new ThreadStart(GetService);
-            thread = new Thread(th);
-            thread.Start();
+            // ThreadStart th = new ThreadStart(GetService);
+            // thread = new Thread(th);
+            // thread.Start();
             comboBoxImgType.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
@@ -139,6 +141,7 @@ namespace CssSprite
                 DrawRectangle(list);
             }
             SetCssText();
+            // horizontal = vertical = false;
         }
 
         private delegate void EnableButtonCallBack();
@@ -148,24 +151,24 @@ namespace CssSprite
             btnUpdate.Visible = true;
         }
 
-        void GetService()
-        {
-            try
-            {
-                var version = new VersionInfo() { Version=CurentVersion};
-                var newVersionStr = httpClass.HttpPost(NetUrl, "data=" + XmlSerializer.XMLSerialize<VersionInfo>(version));
-                newVersion = XmlSerializer.DeXMLSerialize<VersionInfo>(newVersionStr);
-                if (newVersion.Version != version.Version) 
-                {
-                    this.Invoke(new EnableButtonCallBack(ShowBtnUpdate));
-                }
-                thread.Abort();
-            }
-            catch
-            {
+        //void GetService()
+        //{
+        //    try
+        //    {
+        //        var version = new VersionInfo() { Version=CurentVersion};
+        //        var newVersionStr = httpClass.HttpPost(NetUrl, "data=" + XmlSerializer.XMLSerialize<VersionInfo>(version));
+        //        newVersion = XmlSerializer.DeXMLSerialize<VersionInfo>(newVersionStr);
+        //        if (newVersion.Version != version.Version) 
+        //        {
+        //            this.Invoke(new EnableButtonCallBack(ShowBtnUpdate));
+        //        }
+        //        thread.Abort();
+        //    }
+        //    catch
+        //    {
                 
-            }
-        }
+        //    }
+        //}
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
@@ -332,6 +335,8 @@ namespace CssSprite
                 }
                 basePath = Path.GetDirectoryName(openFileDialog.FileName);
                 folderBrowserDialog.SelectedPath = basePath;
+                //Array.Sort(openFileDialog.FileNames);
+                //Console.Write(openFileDialog.FileNames);
                 LoadImages(openFileDialog.FileNames);
                 ButtonVRange_Click(null, EventArgs.Empty);
                 SetBase64();
@@ -501,7 +506,7 @@ namespace CssSprite
                 img.Tag = imgInfo;
                 _imgList.Add(imgInfo);
             }
-            _imgList.Sort(ImageComparison);
+            // _imgList.Sort(ImageComparison);  // 图片排序
         }
 
         int ImageComparison(ImageInfo i1, ImageInfo i2)
@@ -540,7 +545,7 @@ namespace CssSprite
         }
 
         
-        //小图横排点击
+        //小图竖排
         private void ButtonVRange_Click(object sender, EventArgs e)
         {
             if (!AssertFiles()) return;
@@ -556,9 +561,32 @@ namespace CssSprite
 
                 AddPictureBox(img, left, top);
                 currentHeight += img.Height;
+                // Console.WriteLine(currentHeight);
             }
             panelImages.ResumeLayout(false);
             SetCssText();
+            vertical = true;
+            horizontal = false;
+        }
+
+        //小图横排
+        private void buttonHRange_Click(object sender, EventArgs e)
+        {
+            if (!AssertFiles()) return;
+            panelImages.Controls.Clear();
+            int left = 0;
+            int top = 0;
+            foreach (ImageInfo ii in _imgList)
+            {
+                Image img = ii.Image;
+                AddPictureBox(img, left, top);
+                left += img.Width;
+            }
+
+            panelImages.ResumeLayout(false);
+            SetCssText();
+            horizontal = true;
+            vertical = false;
         }
 
         /// <summary>
@@ -739,7 +767,7 @@ namespace CssSprite
             pb.Image = img;
             pb.Location = new System.Drawing.Point(left, top);
             pb.Cursor = Cursors.SizeAll;
-            pb.BorderStyle =BorderStyle.FixedSingle ;
+            pb.BorderStyle =BorderStyle.FixedSingle;
             pb.Name = "pb_" + left + "_" + top;
             pb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             pb.Click += pb_Click;
@@ -970,24 +998,6 @@ namespace CssSprite
             SetCssText();
         }
 
-        //小图横排点击
-        private void buttonHRange_Click(object sender, EventArgs e)
-        {
-            if (!AssertFiles()) return;
-            panelImages.Controls.Clear();
-            int left = 0;
-            int top = 0;
-            foreach (ImageInfo ii in _imgList)
-            {
-                Image img = ii.Image;
-                AddPictureBox(img, left, top);
-                left += img.Width;
-            }
-
-            panelImages.ResumeLayout(false);
-            SetCssText();
-        }
-
         List<PictureBox> _list ;
         private void chkBoxPhone_CheckedChanged(object sender, EventArgs e)
         {
@@ -1138,6 +1148,179 @@ namespace CssSprite
         private void linkLabelLess_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("https://csssprite.herokuapp.com/lessVar");
+        }
+
+        // 生成长图片，由于panel的尺寸限制，当图片的长度大于 32767px 时，会出现重叠的现象，受GDI限制，图片尺寸最大限制为 65534
+        private void buttonLongImg_Click(object sender, EventArgs e)
+        {
+            bool b = false;
+            bool c = !b;
+            if (!horizontal && !vertical)
+            {
+                MessageBox.Show("请选择竖排还是横排");
+                return;
+            }
+            panelImages.VerticalScroll.Value = 0;
+            panelImages.HorizontalScroll.Value = 0;
+            if (_imgList == null || _imgList.Count < 2)
+            {
+                MessageBox.Show("请选择多个背景图片。");
+                return;
+            }
+
+            DialogResult dr = folderBrowserDialog.ShowDialog();
+            if (dr == DialogResult.OK)
+            {
+                string imgDir = folderBrowserDialog.SelectedPath;
+                if (!Directory.Exists(imgDir))
+                {
+                    Directory.CreateDirectory(imgDir);
+                }
+                string imgPath = Path.Combine(imgDir, txtName.Text + "." + GetImgExt());
+                if (File.Exists(imgPath))
+                {
+                    if (DialogResult.Yes !=
+                        MessageBox.Show("选定文件夹中已存在" + txtName.Text + "." + GetImgExt() + "，继续执行将覆盖已存在文件，是否继续？", "询问"
+                        , MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                    {
+                        return;
+                    }
+                }
+
+                int imgWidth = 0, imgHeight = 0;
+                if (horizontal)
+                {
+                    foreach (PictureBox pb in panelImages.Controls)
+                    {
+                        imgHeight = Math.Max(pb.Image.Height, imgHeight);
+                        imgWidth = pb.Image.Width + imgWidth;
+                    }
+                } else if (vertical)
+                {
+                    foreach (PictureBox pb in panelImages.Controls)
+                    {
+                        imgHeight = pb.Image.Height + imgHeight;
+                        imgWidth = Math.Max(pb.Image.Width, imgWidth);
+                    }
+                }
+                if (imgHeight > 65534 || imgWidth > 65534)
+                {
+                    MessageBox.Show("你的图片总长度大于65534，请减小图片尺寸或数量！");
+                    return;
+                }
+                Size imgSize = new Size(imgWidth, imgHeight);
+                //var codeMime = string.Empty;
+                using (Bitmap bigImg = new Bitmap(imgSize.Width, imgSize.Height, PixelFormat.Format32bppArgb))
+                {
+                    string imgType = GetImgExt();
+                    ImageFormat format = ImageFormat.Png;
+                    switch (imgType)
+                    {
+                        case "jpeg":
+                            format = ImageFormat.Jpeg;
+                            break;
+                        case "jpg":
+                            format = ImageFormat.Jpeg;
+                            break;
+                        case "png":
+                            format = ImageFormat.Png;
+                            break;
+                        default:
+                            break;
+                    }
+                    using (Graphics g = Graphics.FromImage(bigImg))
+                    {
+                        //设置高质量插值法 
+                        g.InterpolationMode = InterpolationMode.High;
+                        //设置高质量,低速度呈现平滑度 
+                        g.SmoothingMode = SmoothingMode.HighQuality;
+                        //清空画布并以透明背景色填充 
+                        g.CompositingQuality = CompositingQuality.HighQuality;
+                        g.SmoothingMode = SmoothingMode.HighQuality;
+                        g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+
+                        if ((format == ImageFormat.Jpeg)) g.Clear(Color.White);
+                        else g.Clear(Color.Transparent);
+
+                        SetCssText();
+                        SetBase64();
+                        var sprite = new SpriteFile()
+                        {
+                            CssFileName = txtDir.Text,
+                            ImageName = txtName.Text,
+                            SpriteList = new List<Sprite>(),
+                            IsPhone = chkBoxPhone.Checked,
+                            SpriteImgFileType = comboBoxImgType.Text
+                        };
+                        try
+                        {
+                            int h = 0, w = 0;
+                            if (horizontal)     // 水平排列
+                            {
+                                foreach (PictureBox pb in panelImages.Controls)
+                                {
+                                    h = Math.Max(pb.Image.Height, h);
+                                    w = pb.Image.Width + w;
+                                    var img = (ImageInfo)pb.Image.Tag;
+                                    var path = img.FileName;
+                                    Sprite s = new Sprite() { LocationY = 0, LocationX = w - pb.Image.Width, Path = Path.GetFileName(path) };
+                                    sprite.SpriteList.Add(s);
+                                    g.DrawImage(pb.Image, w - pb.Image.Width, 0, pb.Image.Width, pb.Image.Height);
+                                    if (Path.GetDirectoryName(path) != folderBrowserDialog.SelectedPath)
+                                    {
+                                        File.Copy(path, folderBrowserDialog.SelectedPath + "\\" + Path.GetFileName(path), false);
+                                    }
+                                }
+                            } else if (vertical)    // 垂直排列
+                            {
+                                foreach (PictureBox pb in panelImages.Controls)
+                                {
+                                    h = pb.Image.Height + h;
+                                    w = Math.Max(pb.Image.Width, w);
+                                    var img = (ImageInfo)pb.Image.Tag;
+                                    var path = img.FileName;
+                                    Sprite s = new Sprite() { LocationY = h - pb.Image.Height, LocationX = 0, Path = Path.GetFileName(path) };
+                                    sprite.SpriteList.Add(s);
+                                    g.DrawImage(pb.Image, 0, h - pb.Image.Height, pb.Image.Width, pb.Image.Height);
+                                    if (Path.GetDirectoryName(path) != folderBrowserDialog.SelectedPath)
+                                    {
+                                        File.Copy(path, folderBrowserDialog.SelectedPath + "\\" + Path.GetFileName(path), false);
+                                    }
+                                }
+                            }
+                            
+                             XmlSerializer.SaveToXml(folderBrowserDialog.SelectedPath + "\\" + txtName.Text + ".sprite", sprite);
+                        }
+                        catch (Exception ex)
+                        {
+                            
+                            MessageBox.Show(ex.Message, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        finally {
+                            g.Dispose();
+                        }
+                    }
+                    try
+                    {
+                        //保存图片
+                        bigImg.Save(imgPath, format);
+                        MessageBox.Show("图片生成成功！");
+                    }
+                    catch (ArgumentNullException ne)
+                    {
+                        MessageBox.Show(ne.Message);
+                    }
+                    catch (System.Runtime.InteropServices.ExternalException ee)
+                    {
+                        MessageBox.Show(ee.Message + " 图片生成失败，你的图片总长度可能大于65534，请减小图片尺寸或数量！");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message + "图片生成失败，被覆盖文件可能被其他程序占用，请换个文件名！");
+                    }
+                }
+            }
         }
     }
 }

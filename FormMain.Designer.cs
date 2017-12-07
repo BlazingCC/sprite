@@ -52,6 +52,11 @@
             this.buttonHRange = new System.Windows.Forms.Button();
             this.buttonMakeBigImageCss = new System.Windows.Forms.Button();
             this.panelBottom = new System.Windows.Forms.Panel();
+            this.panelPhone = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.linkLabelLess = new System.Windows.Forms.LinkLabel();
+            this.linkLabelSass = new System.Windows.Forms.LinkLabel();
+            this.linkLabelHelp = new System.Windows.Forms.LinkLabel();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -62,13 +67,10 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panelImages = new System.Windows.Forms.Panel();
-            this.panelPhone = new System.Windows.Forms.Panel();
-            this.linkLabelHelp = new System.Windows.Forms.LinkLabel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.linkLabelSass = new System.Windows.Forms.LinkLabel();
-            this.linkLabelLess = new System.Windows.Forms.LinkLabel();
+            this.buttonLongImg = new System.Windows.Forms.Button();
             this.panelTop.SuspendLayout();
             this.panelBottom.SuspendLayout();
+            this.panelPhone.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -76,7 +78,6 @@
             this.tabPage4.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.panelPhone.SuspendLayout();
             this.SuspendLayout();
             // 
             // openFileDialog
@@ -193,6 +194,7 @@
             // 
             // panelTop
             // 
+            this.panelTop.Controls.Add(this.buttonLongImg);
             this.panelTop.Controls.Add(this.btnUpdate);
             this.panelTop.Controls.Add(this.btnDelete);
             this.panelTop.Controls.Add(this.btnAdd);
@@ -304,9 +306,10 @@
             this.buttonVRange.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonVRange.Location = new System.Drawing.Point(529, 9);
             this.buttonVRange.Name = "buttonVRange";
-            this.buttonVRange.Size = new System.Drawing.Size(134, 40);
+            this.buttonVRange.Size = new System.Drawing.Size(85, 40);
             this.buttonVRange.TabIndex = 4;
             this.buttonVRange.Text = "小图竖排";
+            this.buttonVRange.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonVRange.UseVisualStyleBackColor = false;
             this.buttonVRange.Click += new System.EventHandler(this.ButtonVRange_Click);
             // 
@@ -318,11 +321,12 @@
             this.buttonHRange.ForeColor = System.Drawing.Color.White;
             this.buttonHRange.Image = global::CssSprite.Properties.Resources.horizontal;
             this.buttonHRange.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonHRange.Location = new System.Drawing.Point(669, 9);
+            this.buttonHRange.Location = new System.Drawing.Point(620, 9);
             this.buttonHRange.Name = "buttonHRange";
-            this.buttonHRange.Size = new System.Drawing.Size(115, 40);
+            this.buttonHRange.Size = new System.Drawing.Size(85, 40);
             this.buttonHRange.TabIndex = 5;
             this.buttonHRange.Text = "小图横排";
+            this.buttonHRange.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonHRange.UseVisualStyleBackColor = false;
             this.buttonHRange.Click += new System.EventHandler(this.buttonHRange_Click);
             // 
@@ -333,11 +337,12 @@
             this.buttonMakeBigImageCss.ForeColor = System.Drawing.Color.White;
             this.buttonMakeBigImageCss.Image = global::CssSprite.Properties.Resources.download;
             this.buttonMakeBigImageCss.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonMakeBigImageCss.Location = new System.Drawing.Point(790, 9);
+            this.buttonMakeBigImageCss.Location = new System.Drawing.Point(711, 9);
             this.buttonMakeBigImageCss.Name = "buttonMakeBigImageCss";
-            this.buttonMakeBigImageCss.Size = new System.Drawing.Size(145, 40);
+            this.buttonMakeBigImageCss.Size = new System.Drawing.Size(99, 40);
             this.buttonMakeBigImageCss.TabIndex = 9;
             this.buttonMakeBigImageCss.Text = "生成雪碧图";
+            this.buttonMakeBigImageCss.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonMakeBigImageCss.UseVisualStyleBackColor = false;
             this.buttonMakeBigImageCss.Click += new System.EventHandler(this.ButtonMakeBigImageCss_Click);
             // 
@@ -357,6 +362,60 @@
             this.panelBottom.Name = "panelBottom";
             this.panelBottom.Size = new System.Drawing.Size(1002, 231);
             this.panelBottom.TabIndex = 0;
+            // 
+            // panelPhone
+            // 
+            this.panelPhone.Controls.Add(this.label3);
+            this.panelPhone.Controls.Add(this.linkLabelLess);
+            this.panelPhone.Controls.Add(this.linkLabelSass);
+            this.panelPhone.Controls.Add(this.linkLabelHelp);
+            this.panelPhone.Location = new System.Drawing.Point(106, 60);
+            this.panelPhone.Name = "panelPhone";
+            this.panelPhone.Size = new System.Drawing.Size(435, 28);
+            this.panelPhone.TabIndex = 22;
+            this.panelPhone.Visible = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(2, 9);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(41, 12);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "帮助：";
+            // 
+            // linkLabelLess
+            // 
+            this.linkLabelLess.AutoSize = true;
+            this.linkLabelLess.Location = new System.Drawing.Point(303, 9);
+            this.linkLabelLess.Name = "linkLabelLess";
+            this.linkLabelLess.Size = new System.Drawing.Size(77, 12);
+            this.linkLabelLess.TabIndex = 0;
+            this.linkLabelLess.TabStop = true;
+            this.linkLabelLess.Text = "Less变量合集";
+            this.linkLabelLess.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelLess_LinkClicked);
+            // 
+            // linkLabelSass
+            // 
+            this.linkLabelSass.AutoSize = true;
+            this.linkLabelSass.Location = new System.Drawing.Point(208, 9);
+            this.linkLabelSass.Name = "linkLabelSass";
+            this.linkLabelSass.Size = new System.Drawing.Size(77, 12);
+            this.linkLabelSass.TabIndex = 0;
+            this.linkLabelSass.TabStop = true;
+            this.linkLabelSass.Text = "Sass变量合集";
+            this.linkLabelSass.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelSass_LinkClicked);
+            // 
+            // linkLabelHelp
+            // 
+            this.linkLabelHelp.AutoSize = true;
+            this.linkLabelHelp.Location = new System.Drawing.Point(50, 9);
+            this.linkLabelHelp.Name = "linkLabelHelp";
+            this.linkLabelHelp.Size = new System.Drawing.Size(143, 12);
+            this.linkLabelHelp.TabIndex = 0;
+            this.linkLabelHelp.TabStop = true;
+            this.linkLabelHelp.Text = "手机端页面rem自适应脚本";
+            this.linkLabelHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelHelp_LinkClicked);
             // 
             // tabControl
             // 
@@ -482,59 +541,18 @@
             this.panelImages.Size = new System.Drawing.Size(1002, 242);
             this.panelImages.TabIndex = 0;
             // 
-            // panelPhone
+            // buttonLongImg
             // 
-            this.panelPhone.Controls.Add(this.label3);
-            this.panelPhone.Controls.Add(this.linkLabelLess);
-            this.panelPhone.Controls.Add(this.linkLabelSass);
-            this.panelPhone.Controls.Add(this.linkLabelHelp);
-            this.panelPhone.Location = new System.Drawing.Point(106, 60);
-            this.panelPhone.Name = "panelPhone";
-            this.panelPhone.Size = new System.Drawing.Size(435, 28);
-            this.panelPhone.TabIndex = 22;
-            this.panelPhone.Visible = false;
-            // 
-            // linkLabelHelp
-            // 
-            this.linkLabelHelp.AutoSize = true;
-            this.linkLabelHelp.Location = new System.Drawing.Point(50, 9);
-            this.linkLabelHelp.Name = "linkLabelHelp";
-            this.linkLabelHelp.Size = new System.Drawing.Size(143, 12);
-            this.linkLabelHelp.TabIndex = 0;
-            this.linkLabelHelp.TabStop = true;
-            this.linkLabelHelp.Text = "手机端页面rem自适应脚本";
-            this.linkLabelHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelHelp_LinkClicked);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(2, 9);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 12);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "帮助：";
-            // 
-            // linkLabelSass
-            // 
-            this.linkLabelSass.AutoSize = true;
-            this.linkLabelSass.Location = new System.Drawing.Point(208, 9);
-            this.linkLabelSass.Name = "linkLabelSass";
-            this.linkLabelSass.Size = new System.Drawing.Size(77, 12);
-            this.linkLabelSass.TabIndex = 0;
-            this.linkLabelSass.TabStop = true;
-            this.linkLabelSass.Text = "Sass变量合集";
-            this.linkLabelSass.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelSass_LinkClicked);
-            // 
-            // linkLabelLess
-            // 
-            this.linkLabelLess.AutoSize = true;
-            this.linkLabelLess.Location = new System.Drawing.Point(303, 9);
-            this.linkLabelLess.Name = "linkLabelLess";
-            this.linkLabelLess.Size = new System.Drawing.Size(77, 12);
-            this.linkLabelLess.TabIndex = 0;
-            this.linkLabelLess.TabStop = true;
-            this.linkLabelLess.Text = "Less变量合集";
-            this.linkLabelLess.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelLess_LinkClicked);
+            this.buttonLongImg.BackColor = System.Drawing.Color.GreenYellow;
+            this.buttonLongImg.FlatAppearance.BorderSize = 0;
+            this.buttonLongImg.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonLongImg.Location = new System.Drawing.Point(816, 9);
+            this.buttonLongImg.Name = "buttonLongImg";
+            this.buttonLongImg.Size = new System.Drawing.Size(75, 40);
+            this.buttonLongImg.TabIndex = 26;
+            this.buttonLongImg.Text = "生成长图";
+            this.buttonLongImg.UseVisualStyleBackColor = false;
+            this.buttonLongImg.Click += new System.EventHandler(this.buttonLongImg_Click);
             // 
             // FormMain
             // 
@@ -549,6 +567,8 @@
             this.panelTop.ResumeLayout(false);
             this.panelBottom.ResumeLayout(false);
             this.panelBottom.PerformLayout();
+            this.panelPhone.ResumeLayout(false);
+            this.panelPhone.PerformLayout();
             this.tabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -560,8 +580,6 @@
             this.tabPage4.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            this.panelPhone.ResumeLayout(false);
-            this.panelPhone.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -606,6 +624,7 @@
         private System.Windows.Forms.LinkLabel linkLabelHelp;
         private System.Windows.Forms.LinkLabel linkLabelLess;
         private System.Windows.Forms.LinkLabel linkLabelSass;
+        private System.Windows.Forms.Button buttonLongImg;
     }
 }
 
